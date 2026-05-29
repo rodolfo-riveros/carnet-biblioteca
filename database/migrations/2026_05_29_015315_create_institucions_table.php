@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('institucions', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre');
+            $table->text('descripcion')->nullable();
+            $table->boolean('activo')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

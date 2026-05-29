@@ -14,6 +14,6 @@ class Institucion extends Model
     protected $fillable = [
         'nombre',
         'descripcion',
-        'activo => true',
+        'activo',
     ];
 }
