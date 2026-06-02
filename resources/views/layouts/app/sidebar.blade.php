@@ -21,6 +21,12 @@
                     <flux:sidebar.item icon="book-open" :href="route('categorias.index')" :current="request()->routeIs('categorias.*')" wire:navigate>
                         {{ __('Categorías') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="academic-cap" :href="route('programa-estudios.index')" :current="request()->routeIs('programa-estudios.*')" wire:navigate>
+                        {{ __('Programas de Estudio') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="users" :href="route('estudiantes.index')" :current="request()->routeIs('estudiantes.*')" wire:navigate>
+                        {{ __('Estudiantes') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 
