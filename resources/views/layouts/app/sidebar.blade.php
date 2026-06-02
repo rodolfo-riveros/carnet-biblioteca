@@ -15,8 +15,11 @@
                     <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
-                     <flux:sidebar.item icon="home" :href="route('instituciones.index')" :current="request()->routeIs('instituciones.index')" wire:navigate>
+                     <flux:sidebar.item icon="home" :href="route('instituciones.index')" :current="request()->routeIs('instituciones.*')" wire:navigate>
                         {{ __('Instituciones') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="book-open" :href="route('categorias.index')" :current="request()->routeIs('categorias.*')" wire:navigate>
+                        {{ __('Categorías') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>

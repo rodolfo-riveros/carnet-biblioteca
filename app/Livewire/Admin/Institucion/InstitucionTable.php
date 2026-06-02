@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Institucion;
 
 use App\Models\Institucion;
+use Flux\Flux;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -11,19 +12,37 @@ class InstitucionTable extends Component
     use WithPagination;
 
     // ── Filtros ───────────────────────────────────────────────────────────
-    public string $search      = '';
+    public string $search = '';
+
     public string $filtroActivo = '';   // '' | '1' | '0'
-    public int    $perPage     = 10;
-    public bool   $showDeleted = false;
+
+    public int $perPage = 10;
+
+    public bool $showDeleted = false;
 
     // ── Confirmación de eliminación ───────────────────────────────────────
     public ?int $institucionIdParaEliminar = null;
 
     // ── Reset paginación al filtrar ───────────────────────────────────────
-    public function updatingSearch(): void      { $this->resetPage(); }
-    public function updatingFiltroActivo(): void { $this->resetPage(); }
-    public function updatingPerPage(): void     { $this->resetPage(); }
-    public function updatingShowDeleted(): void { $this->resetPage(); }
+    public function updatingSearch(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingFiltroActivo(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingPerPage(): void
+    {
+        $this->resetPage();
+    }
+
+    public function updatingShowDeleted(): void
+    {
+        $this->resetPage();
+    }
 
     // ── Confirmar eliminación ─────────────────────────────────────────────
     public function confirmDelete(int $id): void
@@ -34,13 +53,15 @@ class InstitucionTable extends Component
     // ── Soft delete ───────────────────────────────────────────────────────
     public function deleteInstitucion(): void
     {
-        if (! $this->institucionIdParaEliminar) return;
+        if (! $this->institucionIdParaEliminar) {
+            return;
+        }
 
         $institucion = Institucion::find($this->institucionIdParaEliminar);
 
         if ($institucion) {
             $institucion->delete();
-            session()->flash('message', 'Institución eliminada correctamente.');
+            Flux::toast(text: 'Institución eliminada correctamente.', variant: 'success');
         }
 
         $this->institucionIdParaEliminar = null;
@@ -51,7 +72,7 @@ class InstitucionTable extends Component
     public function restoreInstitucion(int $id): void
     {
         Institucion::withTrashed()->findOrFail($id)->restore();
-        session()->flash('message', 'Institución restaurada correctamente.');
+        Flux::toast(text: 'Institución restaurada correctamente.', variant: 'success');
     }
 
     // ── Eliminar permanentemente ──────────────────────────────────────────
@@ -62,10 +83,12 @@ class InstitucionTable extends Component
 
     public function forceDeleteInstitucion(): void
     {
-        if (! $this->institucionIdParaEliminar) return;
+        if (! $this->institucionIdParaEliminar) {
+            return;
+        }
 
         Institucion::withTrashed()->findOrFail($this->institucionIdParaEliminar)->forceDelete();
-        session()->flash('message', 'Institución eliminada permanentemente.');
+        Flux::toast(text: 'Institución eliminada permanentemente.', variant: 'success');
 
         $this->institucionIdParaEliminar = null;
         $this->dispatch('close-modal', name: 'modal-force-delete-institucion');
@@ -76,7 +99,7 @@ class InstitucionTable extends Component
     {
         $institucion = Institucion::findOrFail($id);
         $institucion->update(['activo' => ! $institucion->activo]);
-        session()->flash('message', 'Estado actualizado correctamente.');
+        Flux::toast(text: 'Estado actualizado correctamente.', variant: 'success');
     }
 
     // ── Query ─────────────────────────────────────────────────────────────
@@ -91,7 +114,7 @@ class InstitucionTable extends Component
         if ($this->search !== '') {
             $query->where(function ($q) {
                 $q->where('nombre', 'like', "%{$this->search}%")
-                  ->orWhere('descripcion', 'like', "%{$this->search}%");
+                    ->orWhere('descripcion', 'like', "%{$this->search}%");
             });
         }
 

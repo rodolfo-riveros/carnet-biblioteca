@@ -1,46 +1,42 @@
 <div class="w-full py-0 px-4 sm:px-6 lg:px-0 font-sans">
     <div class="w-full bg-white dark:bg-zinc-900 rounded-xl shadow-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800">
 
-        {{-- ══ HEADER ══════════════════════════════════════════════════════════ --}}
         <div class="bg-gradient-to-r from-indigo-600 to-blue-600 dark:from-indigo-700 dark:to-blue-700 px-8 py-6">
             <div class="flex items-center gap-3">
                 <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center">
                     <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                     </svg>
                 </div>
                 <div>
                     <h2 class="text-2xl font-bold text-white tracking-tight">
-                        {{ $isEditMode ? 'Editar Institución' : 'Registrar Nueva Institución' }}
+                        {{ $isEditMode ? 'Editar Categoría' : 'Registrar Nueva Categoría' }}
                     </h2>
                     <p class="text-indigo-100 text-sm mt-1">
                         {{ $isEditMode
-                            ? 'Modifica la información de la institución'
-                            : 'Completa los datos para registrar una nueva institución' }}
+                            ? 'Modifica la información de la categoría'
+                            : 'Completa los datos para registrar una nueva categoría' }}
                     </p>
                 </div>
             </div>
         </div>
 
-        {{-- ══ FORMULARIO ══════════════════════════════════════════════════════ --}}
         <form wire:submit.prevent="save" class="p-8 space-y-8">
 
-            {{-- ── Sección: Datos de la institución ── --}}
             <div>
                 <div class="flex items-center gap-2 mb-6">
                     <div class="w-8 h-8 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg flex items-center justify-center">
                         <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
                         </svg>
                     </div>
-                    <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Información de la Institución</h3>
+                    <h3 class="text-lg font-semibold text-zinc-900 dark:text-zinc-100">Información de la Categoría</h3>
                 </div>
 
                 <div class="grid grid-cols-1 gap-6">
 
-                    {{-- Nombre --}}
                     <div>
                         <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
                             Nombre <span class="text-red-500">*</span>
@@ -48,8 +44,8 @@
                         <input
                             wire:model.live.debounce.400ms="nombre"
                             type="text"
-                            placeholder="Ej: Instituto Tecnológico Superior"
-                            maxlength="150"
+                            placeholder="Ej: Literatura"
+                            maxlength="100"
                             class="w-full px-4 py-2.5 rounded-lg border text-sm transition
                                 @error('nombre')
                                     border-red-400 bg-red-50 dark:bg-red-900/10 focus:ring-red-400
@@ -65,10 +61,9 @@
                                 {{ $message }}
                             </p>
                         @enderror
-                        <p class="mt-1 text-xs text-zinc-400">{{ strlen($nombre) }}/150 caracteres</p>
+                        <p class="mt-1 text-xs text-zinc-400">{{ strlen($nombre) }}/100 caracteres</p>
                     </div>
 
-                    {{-- Descripción --}}
                     <div>
                         <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1">
                             Descripción
@@ -77,7 +72,7 @@
                         <textarea
                             wire:model.live.debounce.400ms="descripcion"
                             rows="3"
-                            placeholder="Descripción breve de la institución"
+                            placeholder="Descripción breve de la categoría"
                             maxlength="255"
                             class="w-full px-4 py-2.5 rounded-lg border text-sm transition resize-none
                                 @error('descripcion')
@@ -97,11 +92,10 @@
                         <p class="mt-1 text-xs text-zinc-400">{{ strlen($descripcion) }}/255 caracteres</p>
                     </div>
 
-                    {{-- ══ SWITCH ACTIVO: solo visible en modo edición ════════ --}}
                     @if ($isEditMode)
                         <div class="p-4 bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-200 dark:border-zinc-700 rounded-xl">
                             <label class="block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">
-                                Estado de la institución
+                                Estado de la categoría
                             </label>
                             <label class="flex items-center gap-4 cursor-pointer w-fit group">
                                 <div class="relative">
@@ -115,8 +109,8 @@
                                     </span>
                                     <p class="text-xs text-zinc-400 dark:text-zinc-500 mt-0.5">
                                         {{ $activo
-                                            ? 'La institución aparece disponible en el sistema'
-                                            : 'La institución no aparecerá en los selectores' }}
+                                            ? 'La categoría aparece disponible en el sistema'
+                                            : 'La categoría no aparecerá en los selectores' }}
                                     </p>
                                 </div>
                             </label>
@@ -128,7 +122,6 @@
 
             <div class="border-t border-zinc-200 dark:border-zinc-700"></div>
 
-            {{-- ── Nota informativa ── --}}
             <div class="bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                 <div class="flex gap-3">
                     <svg class="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -136,14 +129,12 @@
                     </svg>
                     <p class="text-sm text-blue-700 dark:text-blue-300">
                         Los campos marcados con <span class="text-red-500 font-bold">*</span> son obligatorios.
-                        Las instituciones se asocian a las carreras y a los usuarios del sistema.
                     </p>
                 </div>
             </div>
 
-            {{-- ── Botones ── --}}
             <div class="flex flex-col sm:flex-row justify-between items-center gap-4 pt-2">
-                <a href="{{ route('instituciones.index') }}" wire:navigate
+                <a href="{{ route('categorias.index') }}" wire:navigate
                     class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition">
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -169,7 +160,7 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                         </svg>
-                        {{ $isEditMode ? 'Actualizar Institución' : 'Registrar Institución' }}
+                        {{ $isEditMode ? 'Actualizar Categoría' : 'Registrar Categoría' }}
                     </span>
                 </button>
             </div>
