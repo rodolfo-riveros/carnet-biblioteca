@@ -27,6 +27,7 @@
                     <flux:sidebar.item icon="users" :href="route('estudiantes.index')" :current="request()->routeIs('estudiantes.*')" wire:navigate>
                         {{ __('Estudiantes') }}
                     </flux:sidebar.item>
+
                 </flux:sidebar.group>
             </flux:sidebar.nav>
 

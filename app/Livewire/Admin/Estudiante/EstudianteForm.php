@@ -2,12 +2,11 @@
 
 namespace App\Livewire\Admin\Estudiante;
 
+use App\Models\Carnet;
 use App\Models\Estudiante;
 use App\Models\Institucion;
 use App\Models\ProgramaEstudio;
 use Flux\Flux;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -59,6 +58,18 @@ class EstudianteForm extends Component
 
     public bool $consultandoDni = false;
 
+    public ?int $carnet_id = null;
+
+    public string $carnet_numero = '';
+
+    public string $carnet_codigo_barras = '';
+
+    public string $carnet_fecha_emision = '';
+
+    public string $carnet_fecha_vencimiento = '';
+
+    public bool $carnet_existe = false;
+
     protected function rules(): array
     {
         return [
@@ -83,6 +94,8 @@ class EstudianteForm extends Component
             'anio_egreso' => ['nullable', 'digits:4'],
             'estado' => ['required', 'in:activo,suspendido,bloqueado'],
             'observaciones' => ['nullable', 'string', 'max:5000'],
+            'carnet_fecha_emision' => ['required_with:carnet_existe', 'date'],
+            'carnet_fecha_vencimiento' => ['required_with:carnet_existe', 'date', 'after_or_equal:carnet_fecha_emision'],
         ];
     }
 
@@ -105,6 +118,11 @@ class EstudianteForm extends Component
         'anio_egreso.digits' => 'El año de egreso debe tener 4 dígitos.',
         'estado.required' => 'Debe seleccionar un estado.',
         'estado.in' => 'El estado seleccionado no es válido.',
+        'carnet_fecha_emision.required_with' => 'La fecha de emisión del carnet es obligatoria.',
+        'carnet_fecha_emision.date' => 'Ingrese una fecha de emisión válida.',
+        'carnet_fecha_vencimiento.required_with' => 'La fecha de vencimiento del carnet es obligatoria.',
+        'carnet_fecha_vencimiento.date' => 'Ingrese una fecha de vencimiento válida.',
+        'carnet_fecha_vencimiento.after_or_equal' => 'El vencimiento debe ser igual o posterior a la emisión.',
     ];
 
     public function mount(?int $id = null): void
@@ -130,6 +148,16 @@ class EstudianteForm extends Component
             $this->anio_egreso = $estudiante->anio_egreso ? (string) $estudiante->anio_egreso : null;
             $this->estado = $estudiante->estado;
             $this->observaciones = $estudiante->observaciones;
+
+            $carnet = Carnet::where('estudiante_id', $id)->first();
+            if ($carnet) {
+                $this->carnet_existe = true;
+                $this->carnet_id = $carnet->id;
+                $this->carnet_numero = $carnet->numero_carnet;
+                $this->carnet_codigo_barras = $carnet->codigo_barras;
+                $this->carnet_fecha_emision = $carnet->fecha_emision->format('Y-m-d');
+                $this->carnet_fecha_vencimiento = $carnet->fecha_vencimiento->format('Y-m-d');
+            }
         }
     }
 
@@ -201,10 +229,18 @@ class EstudianteForm extends Component
             }
         }
 
-        unset($data['foto']);
+        unset($data['foto'], $data['carnet_fecha_emision'], $data['carnet_fecha_vencimiento'], $data['carnet_existe']);
 
         if ($this->isEditMode) {
             Estudiante::findOrFail($this->estudianteId)->update($data);
+
+            if ($this->carnet_existe && $this->carnet_id) {
+                Carnet::findOrFail($this->carnet_id)->update([
+                    'fecha_emision' => $this->carnet_fecha_emision,
+                    'fecha_vencimiento' => $this->carnet_fecha_vencimiento,
+                ]);
+            }
+
             Flux::toast(text: 'Estudiante actualizado correctamente.', variant: 'success');
         } else {
             $maxCode = Estudiante::where('codigo_alumno', 'like', date('Y').'-%')->max('codigo_alumno');
@@ -216,8 +252,18 @@ class EstudianteForm extends Component
             }
             $data['codigo_alumno'] = date('Y').'-'.str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
-            Estudiante::create($data);
-            Flux::toast(text: 'Estudiante registrado correctamente.', variant: 'success');
+            $estudiante = Estudiante::create($data);
+
+            Carnet::create([
+                'estudiante_id' => $estudiante->id,
+                'numero_carnet' => $data['codigo_alumno'],
+                'codigo_barras' => 'CB-'.date('Ymd').'-'.str_pad($estudiante->id, 5, '0', STR_PAD_LEFT),
+                'fecha_emision' => now(),
+                'fecha_vencimiento' => now()->addYears(5),
+                'creado_por' => auth()->id(),
+            ]);
+
+            Flux::toast(text: 'Estudiante registrado correctamente con su carnet.', variant: 'success');
             $this->reset([
                 'dni', 'nombres', 'apellido_paterno', 'apellido_materno',
                 'celular', 'celular_alternativo', 'email', 'foto', 'foto_ruta',

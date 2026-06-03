@@ -31,18 +31,34 @@
             </div>
         </div>
 
-        <a href="{{ route('estudiantes.create') }}" wire:navigate
-            class="flex items-center gap-2 px-5 py-2.5
-                   bg-indigo-600 hover:bg-indigo-500
-                   text-white font-semibold text-sm rounded-xl
-                   shadow-lg hover:shadow-indigo-500/30
-                   transition-all duration-200 hover:scale-105
-                   border border-indigo-500/50">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-            </svg>
-            Nuevo Estudiante
-        </a>
+        <div class="flex items-center gap-2">
+            <button type="button"
+                x-data @click="$dispatch('open-modal', { name: 'modal-importar-estudiantes' })"
+                class="flex items-center gap-2 px-4 py-2.5
+                       bg-emerald-600 hover:bg-emerald-500
+                       text-white font-semibold text-sm rounded-xl
+                       shadow-lg hover:shadow-emerald-500/30
+                       transition-all duration-200 hover:scale-105
+                       border border-emerald-500/50">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                </svg>
+                Importar
+            </button>
+            <a href="{{ route('estudiantes.create') }}" wire:navigate
+                class="flex items-center gap-2 px-5 py-2.5
+                       bg-indigo-600 hover:bg-indigo-500
+                       text-white font-semibold text-sm rounded-xl
+                       shadow-lg hover:shadow-indigo-500/30
+                       transition-all duration-200 hover:scale-105
+                       border border-indigo-500/50">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+                Nuevo Estudiante
+            </a>
+        </div>
 
     </div>
 </div>

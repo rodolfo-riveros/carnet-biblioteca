@@ -295,6 +295,52 @@
                 </div>
             </div>
 
+            @if ($isEditMode && $carnet_existe)
+            <div class="bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl overflow-hidden">
+                <div class="flex items-center gap-2 px-5 py-3 bg-zinc-50 dark:bg-zinc-800/50 border-b border-zinc-200 dark:border-zinc-700">
+                    <div class="flex items-center justify-center w-7 h-7 rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
+                        </svg>
+                    </div>
+                    <span class="text-sm font-semibold text-zinc-800 dark:text-zinc-200">Carnet de Biblioteca</span>
+                </div>
+
+                <div class="p-5 space-y-4">
+                    <div class="flex items-center gap-4 p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg border border-blue-200 dark:border-blue-800">
+                        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-blue-200 dark:bg-blue-800 shrink-0">
+                            <svg class="w-5 h-5 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0"/>
+                            </svg>
+                        </div>
+                        <div class="flex-1 text-xs text-zinc-600 dark:text-zinc-400">
+                            <p><strong>N° Carnet:</strong> {{ $carnet_numero }}</p>
+                            <p><strong>Código Barras:</strong> {{ $carnet_codigo_barras }}</p>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Fecha de Emisión</label>
+                            <input wire:model.live.debounce.400ms="carnet_fecha_emision" type="date"
+                                class="w-full px-3.5 py-2 rounded-lg border text-sm transition
+                                    @error('carnet_fecha_emision') border-red-400 bg-red-50 @else border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 @enderror
+                                    text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                            @error('carnet_fecha_emision')<p class="mt-0.5 text-xs text-red-500">{{ $message }}</p>@enderror
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-1">Fecha de Vencimiento</label>
+                            <input wire:model.live.debounce.400ms="carnet_fecha_vencimiento" type="date"
+                                class="w-full px-3.5 py-2 rounded-lg border text-sm transition
+                                    @error('carnet_fecha_vencimiento') border-red-400 bg-red-50 @else border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-800 @enderror
+                                    text-zinc-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+                            @error('carnet_fecha_vencimiento')<p class="mt-0.5 text-xs text-red-500">{{ $message }}</p>@enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+
             <div class="flex flex-col sm:flex-row justify-between items-center gap-3 pt-1">
                 <a href="{{ route('estudiantes.index') }}" wire:navigate
                     class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-zinc-500 dark:text-zinc-400 hover:text-zinc-800 dark:hover:text-white transition">

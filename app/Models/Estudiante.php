@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Estudiante extends Model
 {
@@ -54,5 +55,10 @@ class Estudiante extends Model
     public function programaEstudio(): BelongsTo
     {
         return $this->belongsTo(ProgramaEstudio::class);
+    }
+
+    public function carnet(): HasOne
+    {
+        return $this->hasOne(Carnet::class);
     }
 }

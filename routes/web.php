@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\CarnetPdfController;
+use App\Livewire\Admin\Carnet\CarnetImpresion;
 use App\Livewire\Admin\Categoria\CategoriaForm;
 use App\Livewire\Admin\Categoria\CategoriaIndex;
 use App\Livewire\Admin\Estudiante\EstudianteForm;
@@ -39,6 +41,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/', EstudianteIndex::class)->name('index');
         Route::get('/create', EstudianteForm::class)->name('create');
         Route::get('/edit/{id}', EstudianteForm::class)->name('edit');
+    });
+
+    Route::prefix('carnets')->name('carnets.')->group(function () {
+        Route::get('/imprimir', CarnetImpresion::class)->name('imprimir');
+        Route::get('/pdf/{estudiante}', [CarnetPdfController::class, 'download'])->name('pdf');
+        Route::get('/pdf-masivo', [CarnetPdfController::class, 'downloadMasivo'])->name('pdf.masivo');
     });
 });
 
