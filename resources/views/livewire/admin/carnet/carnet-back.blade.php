@@ -115,7 +115,7 @@
         border-top:0.4mm solid rgba(255,255,255,0.3);
     ">
         <span style="color:rgba(255,255,255,0.75);font-size:3.5pt;letter-spacing:0.6pt;text-transform:uppercase;">
-            Sistema de Gestión de Biblioteca
+            Sistema Biblioteca La Salle
         </span>
     </div>
 

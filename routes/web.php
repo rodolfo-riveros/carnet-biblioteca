@@ -14,15 +14,18 @@ use App\Livewire\Admin\Prestamo\PrestamoForm;
 use App\Livewire\Admin\Prestamo\PrestamoIndex;
 use App\Livewire\Admin\ProgramaEstudio\ProgramaEstudioForm;
 use App\Livewire\Admin\ProgramaEstudio\ProgramaEstudioIndex;
+use App\Livewire\Admin\User\UserForm;
+use App\Livewire\Admin\User\UserIndex;
+use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Route;
 
-Route::view('/', 'welcome')->name('home');
+Route::redirect('/', '/login');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::view('dashboard', 'dashboard')->name('dashboard');
+    Route::get('dashboard', Dashboard::class)->name('dashboard');
 });
 
-Route::prefix('admin')->middleware(['auth'])->group(function () {
+Route::prefix('admin')->middleware(['auth', 'role:administrador'])->group(function () {
     Route::prefix('instituciones')->name('instituciones.')->group(function () {
         Route::get('/', InstitucionIndex::class)->name('index');
         Route::get('/create', InstitucionForm::class)->name('create');
@@ -57,6 +60,12 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/', PrestamoIndex::class)->name('index');
         Route::get('/create', PrestamoForm::class)->name('create');
         Route::get('/edit/{id}', PrestamoForm::class)->name('edit');
+    });
+
+    Route::prefix('usuarios')->name('usuarios.')->group(function () {
+        Route::get('/', UserIndex::class)->name('index');
+        Route::get('/create', UserForm::class)->name('create');
+        Route::get('/edit/{id}', UserForm::class)->name('edit');
     });
 
     Route::prefix('carnets')->name('carnets.')->group(function () {

@@ -11,31 +11,44 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
-                <flux:sidebar.group :heading="__('Platform')" class="grid">
-                    <flux:sidebar.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
+                <flux:sidebar.group :heading="__('General')" class="grid">
+                    <flux:sidebar.item icon="chart-bar" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
-                     <flux:sidebar.item icon="home" :href="route('instituciones.index')" :current="request()->routeIs('instituciones.*')" wire:navigate>
-                        {{ __('Instituciones') }}
-                    </flux:sidebar.item>
-                    <flux:sidebar.item icon="book-open" :href="route('categorias.index')" :current="request()->routeIs('categorias.*')" wire:navigate>
-                        {{ __('Categorías') }}
-                    </flux:sidebar.item>
-                    <flux:sidebar.item icon="academic-cap" :href="route('programa-estudios.index')" :current="request()->routeIs('programa-estudios.*')" wire:navigate>
-                        {{ __('Programas de Estudio') }}
-                    </flux:sidebar.item>
+                </flux:sidebar.group>
+
+                <flux:sidebar.group expandable heading="Biblioteca" icon="book-open">
                     <flux:sidebar.item icon="book-open" :href="route('libros.index')" :current="request()->routeIs('libros.*')" wire:navigate>
                         {{ __('Libros') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="tag" :href="route('categorias.index')" :current="request()->routeIs('categorias.*')" wire:navigate>
+                        {{ __('Categorías') }}
                     </flux:sidebar.item>
                     <flux:sidebar.item icon="arrows-right-left" :href="route('prestamos.index')" :current="request()->routeIs('prestamos.*')" wire:navigate>
                         {{ __('Préstamos') }}
                     </flux:sidebar.item>
+                </flux:sidebar.group>
+
+                <flux:sidebar.group expandable heading="Personas" icon="users">
                     <flux:sidebar.item icon="users" :href="route('estudiantes.index')" :current="request()->routeIs('estudiantes.*')" wire:navigate>
                         {{ __('Estudiantes') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="building-library" :href="route('instituciones.index')" :current="request()->routeIs('instituciones.*')" wire:navigate>
+                        {{ __('Instituciones') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="academic-cap" :href="route('programa-estudios.index')" :current="request()->routeIs('programa-estudios.*')" wire:navigate>
+                        {{ __('Programas') }}
+                    </flux:sidebar.item>
+                </flux:sidebar.group>
 
+                <flux:sidebar.group expandable heading="Administración" icon="cog-6-tooth">
+                    <flux:sidebar.item icon="users" :href="route('usuarios.index')" :current="request()->routeIs('usuarios.*')" wire:navigate>
+                        {{ __('Usuarios') }}
+                    </flux:sidebar.item>
                 </flux:sidebar.group>
             </flux:sidebar.nav>
+
+            <div class="border-t border-zinc-200 dark:border-zinc-700 mx-3 my-2"></div>
 
             @livewire('admin.prestamo.notificaciones-prestamo')
 
