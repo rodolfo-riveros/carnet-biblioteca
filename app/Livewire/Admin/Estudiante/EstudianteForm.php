@@ -72,7 +72,7 @@ class EstudianteForm extends Component
 
     protected function rules(): array
     {
-        return [
+        $rules = [
             'dni' => [
                 'required',
                 'string',
@@ -94,9 +94,14 @@ class EstudianteForm extends Component
             'anio_egreso' => ['nullable', 'digits:4'],
             'estado' => ['required', 'in:activo,suspendido,bloqueado'],
             'observaciones' => ['nullable', 'string', 'max:5000'],
-            'carnet_fecha_emision' => ['required_with:carnet_existe', 'date'],
-            'carnet_fecha_vencimiento' => ['required_with:carnet_existe', 'date', 'after_or_equal:carnet_fecha_emision'],
         ];
+
+        if ($this->carnet_existe) {
+            $rules['carnet_fecha_emision'] = ['required', 'date'];
+            $rules['carnet_fecha_vencimiento'] = ['required', 'date', 'after_or_equal:carnet_fecha_emision'];
+        }
+
+        return $rules;
     }
 
     protected array $messages = [

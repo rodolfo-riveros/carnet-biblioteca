@@ -8,27 +8,12 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class CarnetPdfController extends Controller
 {
-    public function download($estudianteId)
+    protected function buildPdf($estudianteId)
     {
         $estudiante = Estudiante::with('institucion', 'programaEstudio')->findOrFail($estudianteId);
         $carnet = Carnet::where('estudiante_id', $estudianteId)->firstOrFail();
 
-        $data = [
-            'numero_carnet' => $carnet->numero_carnet,
-            'codigo_barras' => $carnet->codigo_barras,
-            'fecha_emision' => $carnet->fecha_emision->format('d/m/Y'),
-            'fecha_vencimiento' => $carnet->fecha_vencimiento->format('d/m/Y'),
-            'vencido' => $carnet->fecha_vencimiento->isPast(),
-            'estudiante_id' => $estudiante->id,
-            'estudiante_nombres' => $estudiante->nombres,
-            'estudiante_apellido_paterno' => $estudiante->apellido_paterno,
-            'estudiante_apellido_materno' => $estudiante->apellido_materno,
-            'estudiante_dni' => $estudiante->dni,
-            'estudiante_codigo' => $estudiante->codigo_alumno,
-            'institucion' => $estudiante->institucion->nombre ?? '—',
-            'programa' => $estudiante->programaEstudio->nombre ?? '—',
-            'foto_ruta' => $estudiante->foto_ruta,
-        ];
+        $data = $this->buildData($estudiante, $carnet);
 
         $front = view('livewire.admin.carnet.carnet-front', compact('data'))->render();
         $back = view('livewire.admin.carnet.carnet-back', compact('data'))->render();
@@ -53,14 +38,61 @@ class CarnetPdfController extends Controller
         $pdf = Pdf::loadHTML($html);
         $pdf->setPaper([0, 0, 240.94, 306.14], 'portrait');
 
+        return [$pdf, $estudiante];
+    }
+
+    protected function buildData($estudiante, $carnet): array
+    {
+        return [
+            'numero_carnet' => $carnet->numero_carnet,
+            'codigo_barras' => $carnet->codigo_barras,
+            'fecha_emision' => $carnet->fecha_emision->format('d/m/Y'),
+            'fecha_vencimiento' => $carnet->fecha_vencimiento->format('d/m/Y'),
+            'vencido' => $carnet->fecha_vencimiento->isPast(),
+            'estudiante_id' => $estudiante->id,
+            'estudiante_nombres' => $estudiante->nombres,
+            'estudiante_apellido_paterno' => $estudiante->apellido_paterno,
+            'estudiante_apellido_materno' => $estudiante->apellido_materno,
+            'estudiante_dni' => $estudiante->dni,
+            'estudiante_codigo' => $estudiante->codigo_alumno,
+            'institucion' => $estudiante->institucion->nombre ?? '—',
+            'programa' => $estudiante->programaEstudio->nombre ?? '—',
+            'foto_ruta' => $estudiante->foto_ruta,
+        ];
+    }
+
+    public function stream($estudianteId)
+    {
+        [$pdf] = $this->buildPdf($estudianteId);
+
+        return $pdf->stream("carnet_{$estudianteId}.pdf");
+    }
+
+    public function download($estudianteId)
+    {
+        [$pdf, $estudiante] = $this->buildPdf($estudianteId);
+
         return $pdf->download("carnet_{$estudiante->dni}.pdf");
+    }
+
+    public function streamMasivo()
+    {
+        $pdf = $this->buildMasivoPdf();
+
+        return $pdf->stream('carnets_masivos.pdf');
     }
 
     public function downloadMasivo()
     {
+        $pdf = $this->buildMasivoPdf();
+
+        return $pdf->download('carnets_masivos.pdf');
+    }
+
+    protected function buildMasivoPdf()
+    {
         $institucionId = request('institucion_id');
         $programaEstudioId = request('programa_estudio_id');
-        $estado = request('estado');
         $search = request('search');
 
         $query = Estudiante::with('institucion', 'programaEstudio', 'carnet');
@@ -72,10 +104,6 @@ class CarnetPdfController extends Controller
                     ->orWhere('apellido_materno', 'like', "%{$search}%")
                     ->orWhere('dni', 'like', "%{$search}%");
             });
-        }
-
-        if ($estado) {
-            $query->where('estado', $estado);
         }
 
         if ($institucionId) {
@@ -131,6 +159,6 @@ class CarnetPdfController extends Controller
         $pdf = Pdf::loadHTML($html);
         $pdf->setPaper([0, 0, 240.94, 306.14], 'portrait');
 
-        return $pdf->download('carnets_masivos.pdf');
+        return $pdf;
     }
 }

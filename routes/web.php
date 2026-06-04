@@ -46,7 +46,9 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::prefix('carnets')->name('carnets.')->group(function () {
         Route::get('/imprimir', CarnetImpresion::class)->name('imprimir');
         Route::get('/pdf/{estudiante}', [CarnetPdfController::class, 'download'])->name('pdf');
+        Route::get('/pdf-stream/{estudiante}', [CarnetPdfController::class, 'stream'])->name('pdf.stream');
         Route::get('/pdf-masivo', [CarnetPdfController::class, 'downloadMasivo'])->name('pdf.masivo');
+        Route::get('/pdf-stream-masivo', [CarnetPdfController::class, 'streamMasivo'])->name('pdf.stream-masivo');
     });
 });
 
