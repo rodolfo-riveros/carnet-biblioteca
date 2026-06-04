@@ -9,11 +9,8 @@
 
         <div class="relative flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-6 sm:p-8">
             <div class="flex items-center gap-5">
-                <div class="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-indigo-100 dark:bg-indigo-900/50 flex items-center justify-center shadow-sm">
-                    <svg class="w-9 h-9 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                    </svg>
+                <div class="flex-shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center shadow-sm">
+                    <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-14 h-14 sm:w-18 sm:h-18 object-contain dark:brightness-0 dark:invert">
                 </div>
                 <div>
                     <div class="flex items-center gap-2 mb-1">

@@ -3,11 +3,8 @@
 
         {{-- Logo y Bienvenida --}}
         <div class="flex flex-col items-center gap-3 mb-2">
-            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-600 to-blue-700 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-                </svg>
+            <div class="w-16 h-16 rounded-2xl flex items-center justify-center">
+                <img src="{{ asset('img/logo.png') }}" alt="Logo" class="w-14 h-14 object-contain dark:brightness-0 dark:invert">
             </div>
             <div class="text-center">
                 <h1 class="text-xl font-bold text-zinc-900 dark:text-white">Biblioteca La Salle</h1>

@@ -4,14 +4,14 @@
 
 @if($sidebar)
     <flux:sidebar.brand name="Biblioteca La Salle" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
-            <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
+        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" class="size-7 object-contain dark:brightness-0 dark:invert">
         </x-slot>
     </flux:sidebar.brand>
 @else
     <flux:brand name="Sistema Biblioteca La Salle" {{ $attributes }}>
-        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center rounded-md bg-accent-content text-accent-foreground">
-            <x-app-logo-icon class="size-5 fill-current text-white dark:text-black" />
+        <x-slot name="logo" class="flex aspect-square size-8 items-center justify-center">
+            <img src="{{ asset('img/logo.png') }}" alt="Logo" class="size-7 object-contain dark:brightness-0 dark:invert">
         </x-slot>
     </flux:brand>
 @endif
