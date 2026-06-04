@@ -24,12 +24,20 @@
                     <flux:sidebar.item icon="academic-cap" :href="route('programa-estudios.index')" :current="request()->routeIs('programa-estudios.*')" wire:navigate>
                         {{ __('Programas de Estudio') }}
                     </flux:sidebar.item>
+                    <flux:sidebar.item icon="book-open" :href="route('libros.index')" :current="request()->routeIs('libros.*')" wire:navigate>
+                        {{ __('Libros') }}
+                    </flux:sidebar.item>
+                    <flux:sidebar.item icon="arrows-right-left" :href="route('prestamos.index')" :current="request()->routeIs('prestamos.*')" wire:navigate>
+                        {{ __('Préstamos') }}
+                    </flux:sidebar.item>
                     <flux:sidebar.item icon="users" :href="route('estudiantes.index')" :current="request()->routeIs('estudiantes.*')" wire:navigate>
                         {{ __('Estudiantes') }}
                     </flux:sidebar.item>
 
                 </flux:sidebar.group>
             </flux:sidebar.nav>
+
+            @livewire('admin.prestamo.notificaciones-prestamo')
 
             <flux:spacer />
 

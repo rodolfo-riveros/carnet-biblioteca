@@ -8,6 +8,10 @@ use App\Livewire\Admin\Estudiante\EstudianteForm;
 use App\Livewire\Admin\Estudiante\EstudianteIndex;
 use App\Livewire\Admin\Institucion\InstitucionForm;
 use App\Livewire\Admin\Institucion\InstitucionIndex;
+use App\Livewire\Admin\Libro\LibroForm;
+use App\Livewire\Admin\Libro\LibroIndex;
+use App\Livewire\Admin\Prestamo\PrestamoForm;
+use App\Livewire\Admin\Prestamo\PrestamoIndex;
 use App\Livewire\Admin\ProgramaEstudio\ProgramaEstudioForm;
 use App\Livewire\Admin\ProgramaEstudio\ProgramaEstudioIndex;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +45,18 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/', EstudianteIndex::class)->name('index');
         Route::get('/create', EstudianteForm::class)->name('create');
         Route::get('/edit/{id}', EstudianteForm::class)->name('edit');
+    });
+
+    Route::prefix('libros')->name('libros.')->group(function () {
+        Route::get('/', LibroIndex::class)->name('index');
+        Route::get('/create', LibroForm::class)->name('create');
+        Route::get('/edit/{id}', LibroForm::class)->name('edit');
+    });
+
+    Route::prefix('prestamos')->name('prestamos.')->group(function () {
+        Route::get('/', PrestamoIndex::class)->name('index');
+        Route::get('/create', PrestamoForm::class)->name('create');
+        Route::get('/edit/{id}', PrestamoForm::class)->name('edit');
     });
 
     Route::prefix('carnets')->name('carnets.')->group(function () {
