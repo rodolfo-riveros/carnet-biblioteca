@@ -2,16 +2,30 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="dark">
     <head>
         @include('partials.head')
+        <style>
+            body {
+                background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 50%, #0f172a 100%);
+            }
+            .auth-card {
+                background: rgba(255, 255, 255, 0.05);
+                backdrop-filter: blur(20px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
+            .dark .auth-card {
+                background: rgba(15, 23, 42, 0.8);
+            }
+        </style>
     </head>
-    <body class="min-h-screen bg-white antialiased dark:bg-linear-to-b dark:from-neutral-950 dark:to-neutral-900">
-        <div class="bg-background flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">
-            <div class="flex w-full max-w-sm flex-col gap-2">
-                <a href="{{ url('/') }}" class="flex flex-col items-center gap-2 font-medium" wire:navigate>
-                    <span class="flex h-9 w-9 mb-1 items-center justify-center rounded-md">
-                        <x-app-logo-icon class="size-9 fill-current text-black dark:text-white" />
-                    </span>
-                    <span class="sr-only">{{ config('app.name', 'Laravel') }}</span>
-                </a>
+    <body class="min-h-screen antialiased flex items-center justify-center p-4 md:p-10">
+        {{-- Decoración --}}
+        <div class="fixed inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-40 -right-40 w-80 h-80 rounded-full bg-indigo-500/5 blur-3xl"></div>
+            <div class="absolute -bottom-40 -left-40 w-80 h-80 rounded-full bg-blue-500/5 blur-3xl"></div>
+            <div class="absolute top-1/3 left-1/4 w-60 h-60 rounded-full bg-sky-500/5 blur-3xl"></div>
+        </div>
+
+        <div class="relative w-full max-w-sm auth-card rounded-2xl p-8 shadow-2xl">
+            <div class="flex flex-col gap-2">
                 <div class="flex flex-col gap-6">
                     {{ $slot }}
                 </div>

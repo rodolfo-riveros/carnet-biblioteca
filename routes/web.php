@@ -14,6 +14,8 @@ use App\Livewire\Admin\Prestamo\PrestamoForm;
 use App\Livewire\Admin\Prestamo\PrestamoIndex;
 use App\Livewire\Admin\ProgramaEstudio\ProgramaEstudioForm;
 use App\Livewire\Admin\ProgramaEstudio\ProgramaEstudioIndex;
+use App\Livewire\Admin\Role\RoleForm;
+use App\Livewire\Admin\Role\RoleIndex;
 use App\Livewire\Admin\User\UserForm;
 use App\Livewire\Admin\User\UserIndex;
 use App\Livewire\Dashboard;
@@ -21,51 +23,57 @@ use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/login');
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth'])->group(function () {
     Route::get('dashboard', Dashboard::class)->name('dashboard');
 });
 
-Route::prefix('admin')->middleware(['auth', 'role:administrador'])->group(function () {
-    Route::prefix('instituciones')->name('instituciones.')->group(function () {
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::prefix('instituciones')->name('instituciones.')->middleware('can:ver instituciones')->group(function () {
         Route::get('/', InstitucionIndex::class)->name('index');
-        Route::get('/create', InstitucionForm::class)->name('create');
-        Route::get('/edit/{id}', InstitucionForm::class)->name('edit');
+        Route::get('/create', InstitucionForm::class)->middleware('can:crear instituciones')->name('create');
+        Route::get('/edit/{id}', InstitucionForm::class)->middleware('can:editar instituciones')->name('edit');
     });
 
-    Route::prefix('categorias')->name('categorias.')->group(function () {
+    Route::prefix('categorias')->name('categorias.')->middleware('can:ver categorias')->group(function () {
         Route::get('/', CategoriaIndex::class)->name('index');
-        Route::get('/create', CategoriaForm::class)->name('create');
-        Route::get('/edit/{id}', CategoriaForm::class)->name('edit');
+        Route::get('/create', CategoriaForm::class)->middleware('can:crear categorias')->name('create');
+        Route::get('/edit/{id}', CategoriaForm::class)->middleware('can:editar categorias')->name('edit');
     });
 
-    Route::prefix('programa-estudios')->name('programa-estudios.')->group(function () {
+    Route::prefix('programa-estudios')->name('programa-estudios.')->middleware('can:ver programas')->group(function () {
         Route::get('/', ProgramaEstudioIndex::class)->name('index');
-        Route::get('/create', ProgramaEstudioForm::class)->name('create');
-        Route::get('/edit/{id}', ProgramaEstudioForm::class)->name('edit');
+        Route::get('/create', ProgramaEstudioForm::class)->middleware('can:crear programas')->name('create');
+        Route::get('/edit/{id}', ProgramaEstudioForm::class)->middleware('can:editar programas')->name('edit');
     });
 
-    Route::prefix('estudiantes')->name('estudiantes.')->group(function () {
+    Route::prefix('estudiantes')->name('estudiantes.')->middleware('can:ver estudiantes')->group(function () {
         Route::get('/', EstudianteIndex::class)->name('index');
-        Route::get('/create', EstudianteForm::class)->name('create');
-        Route::get('/edit/{id}', EstudianteForm::class)->name('edit');
+        Route::get('/create', EstudianteForm::class)->middleware('can:crear estudiantes')->name('create');
+        Route::get('/edit/{id}', EstudianteForm::class)->middleware('can:editar estudiantes')->name('edit');
     });
 
-    Route::prefix('libros')->name('libros.')->group(function () {
+    Route::prefix('libros')->name('libros.')->middleware('can:ver libros')->group(function () {
         Route::get('/', LibroIndex::class)->name('index');
-        Route::get('/create', LibroForm::class)->name('create');
-        Route::get('/edit/{id}', LibroForm::class)->name('edit');
+        Route::get('/create', LibroForm::class)->middleware('can:crear libros')->name('create');
+        Route::get('/edit/{id}', LibroForm::class)->middleware('can:editar libros')->name('edit');
     });
 
-    Route::prefix('prestamos')->name('prestamos.')->group(function () {
+    Route::prefix('prestamos')->name('prestamos.')->middleware('can:ver prestamos')->group(function () {
         Route::get('/', PrestamoIndex::class)->name('index');
-        Route::get('/create', PrestamoForm::class)->name('create');
-        Route::get('/edit/{id}', PrestamoForm::class)->name('edit');
+        Route::get('/create', PrestamoForm::class)->middleware('can:crear prestamos')->name('create');
+        Route::get('/edit/{id}', PrestamoForm::class)->middleware('can:editar prestamos')->name('edit');
     });
 
-    Route::prefix('usuarios')->name('usuarios.')->group(function () {
+    Route::prefix('usuarios')->name('usuarios.')->middleware('can:ver usuarios')->group(function () {
         Route::get('/', UserIndex::class)->name('index');
-        Route::get('/create', UserForm::class)->name('create');
-        Route::get('/edit/{id}', UserForm::class)->name('edit');
+        Route::get('/create', UserForm::class)->middleware('can:crear usuarios')->name('create');
+        Route::get('/edit/{id}', UserForm::class)->middleware('can:editar usuarios')->name('edit');
+    });
+
+    Route::prefix('roles')->name('roles.')->middleware('can:ver roles')->group(function () {
+        Route::get('/', RoleIndex::class)->name('index');
+        Route::get('/create', RoleForm::class)->middleware('can:crear roles')->name('create');
+        Route::get('/edit/{id}', RoleForm::class)->middleware('can:editar roles')->name('edit');
     });
 
     Route::prefix('carnets')->name('carnets.')->group(function () {

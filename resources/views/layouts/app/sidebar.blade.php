@@ -11,41 +11,68 @@
             </flux:sidebar.header>
 
             <flux:sidebar.nav>
+                @can('ver dashboard')
                 <flux:sidebar.group :heading="__('General')" class="grid">
                     <flux:sidebar.item icon="chart-bar" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>
                         {{ __('Dashboard') }}
                     </flux:sidebar.item>
                 </flux:sidebar.group>
+                @endcan
 
+                @canany(['ver libros', 'ver prestamos', 'ver categorias'])
                 <flux:sidebar.group expandable heading="Biblioteca" icon="book-open">
+                    @can('ver libros')
                     <flux:sidebar.item icon="book-open" :href="route('libros.index')" :current="request()->routeIs('libros.*')" wire:navigate>
                         {{ __('Libros') }}
                     </flux:sidebar.item>
+                    @endcan
+                    @can('ver categorias')
                     <flux:sidebar.item icon="tag" :href="route('categorias.index')" :current="request()->routeIs('categorias.*')" wire:navigate>
                         {{ __('Categorías') }}
                     </flux:sidebar.item>
+                    @endcan
+                    @can('ver prestamos')
                     <flux:sidebar.item icon="arrows-right-left" :href="route('prestamos.index')" :current="request()->routeIs('prestamos.*')" wire:navigate>
                         {{ __('Préstamos') }}
                     </flux:sidebar.item>
+                    @endcan
                 </flux:sidebar.group>
+                @endcanany
 
+                @canany(['ver estudiantes', 'ver instituciones', 'ver programas'])
                 <flux:sidebar.group expandable heading="Personas" icon="users">
+                    @can('ver estudiantes')
                     <flux:sidebar.item icon="users" :href="route('estudiantes.index')" :current="request()->routeIs('estudiantes.*')" wire:navigate>
                         {{ __('Estudiantes') }}
                     </flux:sidebar.item>
+                    @endcan
+                    @can('ver instituciones')
                     <flux:sidebar.item icon="building-library" :href="route('instituciones.index')" :current="request()->routeIs('instituciones.*')" wire:navigate>
                         {{ __('Instituciones') }}
                     </flux:sidebar.item>
+                    @endcan
+                    @can('ver programas')
                     <flux:sidebar.item icon="academic-cap" :href="route('programa-estudios.index')" :current="request()->routeIs('programa-estudios.*')" wire:navigate>
                         {{ __('Programas') }}
                     </flux:sidebar.item>
+                    @endcan
                 </flux:sidebar.group>
+                @endcanany
 
+                @canany(['ver usuarios', 'ver roles'])
                 <flux:sidebar.group expandable heading="Administración" icon="cog-6-tooth">
+                    @can('ver usuarios')
                     <flux:sidebar.item icon="users" :href="route('usuarios.index')" :current="request()->routeIs('usuarios.*')" wire:navigate>
                         {{ __('Usuarios') }}
                     </flux:sidebar.item>
+                    @endcan
+                    @can('ver roles')
+                    <flux:sidebar.item icon="shield-check" :href="route('roles.index')" :current="request()->routeIs('roles.*')" wire:navigate>
+                        {{ __('Roles') }}
+                    </flux:sidebar.item>
+                    @endcan
                 </flux:sidebar.group>
+                @endcanany
             </flux:sidebar.nav>
 
             <div class="border-t border-zinc-200 dark:border-zinc-700 mx-3 my-2"></div>
