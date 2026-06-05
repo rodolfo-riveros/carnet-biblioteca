@@ -2,31 +2,17 @@
 
 namespace App\Exports;
 
-use Maatwebsite\Excel\Concerns\FromArray;
-use Maatwebsite\Excel\Concerns\WithHeadings;
+use App\Exports\Sheets\DatosEstudiantesSheet;
+use App\Exports\Sheets\LeyendaSheet;
+use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
-class PlantillaEstudiantesExport implements FromArray, WithHeadings
+class PlantillaEstudiantesExport implements WithMultipleSheets
 {
-    public function array(): array
-    {
-        return [];
-    }
-
-    public function headings(): array
+    public function sheets(): array
     {
         return [
-            'DNI',
-            'Nombres',
-            'Apellido Paterno',
-            'Apellido Materno',
-            'Celular',
-            'Celular Alternativo',
-            'Email',
-            'Institución ID',
-            'Programa Estudio ID',
-            'Código Alumno',
-            'Año Ingreso',
-            'Año Egreso',
+            new DatosEstudiantesSheet,
+            new LeyendaSheet,
         ];
     }
 }
