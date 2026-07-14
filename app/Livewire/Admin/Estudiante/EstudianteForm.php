@@ -262,7 +262,7 @@ class EstudianteForm extends Component
             Carnet::create([
                 'estudiante_id' => $estudiante->id,
                 'numero_carnet' => $data['codigo_alumno'],
-                'codigo_barras' => 'CB-'.date('Ymd').'-'.str_pad($estudiante->id, 5, '0', STR_PAD_LEFT),
+                'codigo_barras' => 'CB'.date('Ymd').str_pad($estudiante->id, 5, '0', STR_PAD_LEFT),
                 'fecha_emision' => now(),
                 'fecha_vencimiento' => now()->addYears(5),
                 'creado_por' => auth()->id(),

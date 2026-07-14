@@ -22,6 +22,13 @@ class EstudiantesImport implements ToCollection, WithHeadingRow
             try {
                 $data = $row->toArray();
                 $dni = trim($data['dni'] ?? '');
+                $nombres = trim($data['nombres'] ?? '');
+                $apellidoPaterno = trim($data['apellido_paterno'] ?? '');
+                $apellidoMaterno = trim($data['apellido_materno'] ?? '');
+
+                if (empty($dni) && empty($nombres) && empty($apellidoPaterno) && empty($apellidoMaterno)) {
+                    continue;
+                }
 
                 if (empty($dni) || ! preg_match('/^\d{8}$/', $dni)) {
                     $this->errores[] = 'Fila '.($index + 2).': DNI inválido ('.$dni.')';
@@ -56,7 +63,7 @@ class EstudiantesImport implements ToCollection, WithHeadingRow
                 Carnet::create([
                     'estudiante_id' => $estudiante->id,
                     'numero_carnet' => $estudiante->codigo_alumno ?? 'CAR-'.date('Y').'-'.str_pad($estudiante->id, 5, '0', STR_PAD_LEFT),
-                    'codigo_barras' => 'CB-'.date('Ymd').'-'.str_pad($estudiante->id, 5, '0', STR_PAD_LEFT),
+                    'codigo_barras' => 'CB'.date('Ymd').str_pad($estudiante->id, 5, '0', STR_PAD_LEFT),
                     'fecha_emision' => now(),
                     'fecha_vencimiento' => now()->addYears(5),
                     'creado_por' => auth()->id(),

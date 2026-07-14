@@ -65,7 +65,7 @@ class TestDataSeeder extends Seeder
 
             $est->carnet()->create([
                 'numero_carnet' => 'CAR-'.str_pad($est->id, 5, '0', STR_PAD_LEFT),
-                'codigo_barras' => 'CB-'.Carbon::now()->format('Ymd').'-'.str_pad($est->id, 5, '0', STR_PAD_LEFT),
+                'codigo_barras' => 'CB'.Carbon::now()->format('Ymd').str_pad($est->id, 5, '0', STR_PAD_LEFT),
                 'fecha_emision' => now(),
                 'fecha_vencimiento' => now()->addYears(5),
                 'creado_por' => 1,
@@ -115,7 +115,7 @@ class TestDataSeeder extends Seeder
                 Ejemplar::create([
                     'libro_id' => $libro->id,
                     'numero_copia' => str_pad($c, 3, '0', STR_PAD_LEFT),
-                    'codigo_barras' => "CB-{$codigo}-{$c}",
+                    'codigo_barras' => 'CB'.date('Ymd').str_pad($libro->id, 5, '0', STR_PAD_LEFT).str_pad($c, 2, '0', STR_PAD_LEFT),
                     'estado' => 'disponible',
                 ]);
             }

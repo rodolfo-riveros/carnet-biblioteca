@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\BarcodeLabelController;
+use App\Http\Controllers\BarcodePdfController;
 use App\Http\Controllers\CarnetPdfController;
+use App\Http\Controllers\LibroBarcodeDownloadController;
 use App\Livewire\Admin\Carnet\CarnetImpresion;
 use App\Livewire\Admin\Categoria\CategoriaForm;
 use App\Livewire\Admin\Categoria\CategoriaIndex;
@@ -56,6 +59,13 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
         Route::get('/', LibroIndex::class)->name('index');
         Route::get('/create', LibroForm::class)->middleware('can:crear libros')->name('create');
         Route::get('/edit/{id}', LibroForm::class)->middleware('can:editar libros')->name('edit');
+
+        Route::get('/barcode/pdf/{startId}/{endId}', [BarcodePdfController::class, 'generatePdf'])->name('barcode.pdf');
+        Route::get('/barcode/pdf-stream/{startId}/{endId}', [BarcodePdfController::class, 'streamPdf'])->name('barcode.pdf-stream');
+        Route::get('/barcode/exportar-todos', [BarcodeLabelController::class, 'export'])->name('barcode.export');
+        Route::get('/barcode/libro/{libroId}', [LibroBarcodeDownloadController::class, 'downloadLibro'])->name('barcode.libro');
+        Route::get('/barcode/ejemplar/{id}', [LibroBarcodeDownloadController::class, 'downloadEjemplar'])->name('barcode.ejemplar');
+        Route::get('/barcode/ejemplares-masivo', [LibroBarcodeDownloadController::class, 'downloadEjemplaresMasivo'])->name('barcode.ejemplares-masivo');
     });
 
     Route::prefix('prestamos')->name('prestamos.')->middleware('can:ver prestamos')->group(function () {

@@ -136,6 +136,14 @@
                                     </button>
                                 </a>
 
+                                <a href="{{ route('libros.barcode.libro', $libro->id) }}"
+                                    class="group relative p-2 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 rounded-lg transition">
+                                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 010 1.414L14 7h6a2 2 0 012 2v3a2 2 0 01-2 2h-2a2 2 0 01-2-2V8c0-.265.105-.52.293-.707a1 1 0 011.414 0l3.586 3.586a1 1 0 010 1.414V19a2 2 0 01-2 2h-2a2 2 0 01-2-2v-1z"/>
+                                    </svg>
+                                    <span class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Código de Barras</span>
+                                </a>
+
                                 <button wire:click="confirmDelete({{ $libro->id }})"
                                     x-data @click="$dispatch('open-modal', { name: 'modal-delete-libro' })"
                                     class="group relative p-2 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition">

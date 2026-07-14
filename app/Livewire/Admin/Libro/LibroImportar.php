@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Livewire\Admin\Estudiante;
+namespace App\Livewire\Admin\Libro;
 
-use App\Exports\PlantillaEstudiantesExport;
-use App\Imports\EstudiantesImport;
+use App\Exports\PlantillaLibrosExport;
+use App\Imports\LibrosImport;
 use Flux\Flux;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Maatwebsite\Excel\Facades\Excel;
 
-class EstudianteImportar extends Component
+class LibroImportar extends Component
 {
     use WithFileUploads;
 
@@ -41,7 +41,7 @@ class EstudianteImportar extends Component
 
     public function descargarPlantilla()
     {
-        return Excel::download(new PlantillaEstudiantesExport, 'plantilla_estudiantes.xlsx');
+        return Excel::download(new PlantillaLibrosExport, 'plantilla_libros.xlsx');
     }
 
     public function updatedArchivo(): void
@@ -53,7 +53,7 @@ class EstudianteImportar extends Component
         $this->fallidos = 0;
 
         try {
-            $rows = Excel::toCollection(new EstudiantesImport, $this->archivo->getRealPath());
+            $rows = Excel::toCollection(new LibrosImport, $this->archivo->getRealPath());
             $allRows = $rows->first()?->toArray() ?? [];
             $this->preview = array_values(array_filter($allRows, function ($row) {
                 return collect($row)->filter(fn ($v) => filled(trim((string) $v)))->isNotEmpty();
@@ -77,7 +77,7 @@ class EstudianteImportar extends Component
         $this->errores = [];
 
         try {
-            $import = new EstudiantesImport;
+            $import = new LibrosImport;
             Excel::import($import, $this->archivo->getRealPath());
 
             $this->importados = $import->importados;
@@ -98,6 +98,6 @@ class EstudianteImportar extends Component
 
     public function render()
     {
-        return view('livewire.admin.estudiante.estudiante-importar');
+        return view('livewire.admin.libro.libro-importar');
     }
 }

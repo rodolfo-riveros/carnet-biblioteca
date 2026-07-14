@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithTitle;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class DatosEstudiantesSheet implements FromArray, ShouldAutoSize, WithHeadings, WithStyles, WithTitle
+class DatosLibrosSheet implements FromArray, ShouldAutoSize, WithHeadings, WithStyles, WithTitle
 {
     public function array(): array
     {
@@ -20,18 +20,23 @@ class DatosEstudiantesSheet implements FromArray, ShouldAutoSize, WithHeadings, 
     public function headings(): array
     {
         return [
-            'DNI',
-            'Nombres',
-            'Apellido Paterno',
-            'Apellido Materno',
-            'Celular',
-            'Celular Alternativo',
-            'Email',
-            'Institución ID',
-            'Programa Estudio ID',
-            'Código Alumno',
-            'Año Ingreso',
-            'Año Egreso',
+            'Título',
+            'Subtítulo',
+            'Autor',
+            'Co-autores',
+            'ISBN',
+            'Código Interno',
+            'Editorial',
+            'Lugar Publicación',
+            'Año Publicación',
+            'Edición',
+            'Páginas',
+            'Idioma',
+            'Descripción',
+            'Palabras Clave',
+            'Categoría ID',
+            'Ubicación Estante',
+            'Signatura',
         ];
     }
 
@@ -42,7 +47,7 @@ class DatosEstudiantesSheet implements FromArray, ShouldAutoSize, WithHeadings, 
 
     public function styles(Worksheet $sheet): void
     {
-        $ultimaColumna = 'L';
+        $ultimaColumna = 'Q';
 
         $sheet->getStyle("A1:{$ultimaColumna}1")->applyFromArray([
             'font' => [
@@ -66,7 +71,7 @@ class DatosEstudiantesSheet implements FromArray, ShouldAutoSize, WithHeadings, 
         $sheet->freezePane('A2');
 
         $notaFila = 4;
-        $sheet->setCellValue("A{$notaFila}", 'NOTA: Use la hoja "Leyenda" para consultar los IDs de Instituciones y Programas de Estudio.');
+        $sheet->setCellValue("A{$notaFila}", 'NOTA: Use la hoja "Leyenda" para consultar los IDs de Categorías. * Campos obligatorios: Título, Autor.');
         $sheet->getStyle("A{$notaFila}")->applyFromArray([
             'font' => [
                 'italic' => true,

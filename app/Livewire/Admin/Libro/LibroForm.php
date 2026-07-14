@@ -258,7 +258,11 @@ class LibroForm extends Component
             $libro = Libro::create($data);
 
             foreach ($this->ejemplares as $ej) {
-                $barcode = ! empty($ej['codigo_barras']) ? $ej['codigo_barras'] : $this->generarCodigoBarras();
+                if (! empty($ej['codigo_barras'])) {
+                    $barcode = $ej['codigo_barras'];
+                } else {
+                    $barcode = $this->generarCodigoBarras();
+                }
                 $libro->ejemplares()->create([
                     'numero_copia' => $ej['numero_copia'],
                     'codigo_barras' => $barcode,
@@ -336,7 +340,7 @@ class LibroForm extends Component
         $maxEj = Ejemplar::max('id') ?? 0;
         $seq = max($maxId, $maxEj) + 1;
 
-        return 'CB-'.date('Ymd').'-'.str_pad($seq, 5, '0', STR_PAD_LEFT);
+        return 'CB'.date('Ymd').str_pad($seq, 5, '0', STR_PAD_LEFT);
     }
 
     public function render()
